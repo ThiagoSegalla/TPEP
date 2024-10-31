@@ -1,0 +1,198 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Fazer Agendamento Call.com
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: 9f56d690-fda1-451b-9b50-394e7f8b3da0
+    name: eventTypeid
+    value: '1328068'
+    value_type: string
+  - description: ''
+    id: c10652f0-b781-4404-b869-b2c5449563ad
+    name: apikey
+    value: ''
+    value_type: secret
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: http-request
+      id: 1729813862850-source-1729814210148-target
+      source: '1729813862850'
+      sourceHandle: source
+      target: '1729814210148'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: end
+      id: 1729814210148-source-1729815432083-target
+      source: '1729814210148'
+      sourceHandle: source
+      target: '1729815432083'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Iniciar
+        type: start
+        variables:
+        - label: Slot de data selecionada para o agendamento
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: dataslot
+        - label: Nome completo
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: nome
+        - label: Email
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: email
+        - label: Telefone no formato (xx) xxxxx-xxxx
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: telefone
+      height: 167
+      id: '1729813862850'
+      position:
+        x: 12.226797055174984
+        y: 200.44241679521048
+      positionAbsolute:
+        x: 12.226797055174984
+        y: 200.44241679521048
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-1
+            key: ''
+            type: text
+            value: "{\n  \"start\": \"{{#1729813862850.dataslot#}}\",\n  \"eventTypeId\"\
+              : {{#env.eventTypeId#}},\n  \"attendee\": {\n    \"name\": \"{{#1729813862850.nome#}}\"\
+              ,\n    \"email\": \"{{#1729813862850.email#}}\",\n    \"timeZone\":\
+              \ \"America/Cuiaba\",\n    \"language\": \"pt-BR\"\n  },\n  \"guests\"\
+              : [],\n  \"meetingUrl\":\"http://unemat.br\",\n  \"location\": \"http://unemat.br\"\
+              ,\n\"bookingFieldsResponses\": {\n    \"customField\": \"{{#1729813862850.telefone#}}\"\
+              \n }\n}"
+          type: json
+        desc: ''
+        headers: 'Authorization:better {{#env.apikey#}}
+
+          cal-api-version:2024-08-13'
+        method: post
+        params: ''
+        selected: false
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: Requisição HTTP
+        type: http-request
+        url: https://api.cal.com/v2/bookings
+        variables: []
+      height: 109
+      id: '1729814210148'
+      position:
+        x: 398.8514685427613
+        y: 172.47587703363232
+      positionAbsolute:
+        x: 398.8514685427613
+        y: 172.47587703363232
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1729814210148'
+          - body
+          variable: Result
+        selected: true
+        title: Fim
+        type: end
+      height: 89
+      id: '1729815432083'
+      position:
+        x: 757.6760589389631
+        y: 161.73939345789358
+      positionAbsolute:
+        x: 757.6760589389631
+        y: 161.73939345789358
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 243
+    viewport:
+      x: -255.61201565858823
+      y: -28.77886641482928
+      zoom: 1.2599210498948732
